@@ -15,7 +15,7 @@ back文件加下有数据库备份文件，请建立数据库，并导入。同�
 别忘了vendor/Workerman/Applications/Config/Db.php，workerman的数据库同步跟上。
 
 #关于LayIM
-本项目无法直接运行，因为layIM不开源，可以去http://layim.layui.com/这里，layUI的官网去授权吧
+本项目无法直接运行，因为layIM不开源，可以去http://layim.layui.com  这里，layUI的官网去授权吧
 
 #了解效果
 http://www.thinkphp.cn/code/2289.html
