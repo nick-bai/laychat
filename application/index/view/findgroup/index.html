@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查找/添加群组</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="/static/admin/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="/static/admin/css/font-awesome.min.css?v=4.4.0" rel="stylesheet">
+    <link href="/static/admin/css/animate.min.css" rel="stylesheet">
+    <link href="/static/admin/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/static/admin/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <!-- Sweet Alert -->
+    <link href="/static/admin/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="commentForm" method="post" action="">
+                        <div class="form-group">
+                            <div class="col-sm-10">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="search_txt" placeholder="输入群组名称" id="search_txt">
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-primary" id="find">搜索</button>
+                                    </span>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-w-m btn-warning" id="addGroup">创建群组</button>
+                                    </span>
+                                    &nbsp;&nbsp;&nbsp;
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-w-m btn-primary" id="myGroup">我的群组</button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 最近新建的分组 -->
+    <div class="row"><div class="col-sm-3"><label id="search_title">最近新添加的群组</label></div></div>
+    <div class="row" id="search_data">
+        {if !empty($group)}
+        {foreach name="group" item="vo"}
+        <div class="col-sm-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>{$vo.groupname}</h5>
+                </div>
+                <div class="ibox-content">
+                    <div style="margin: 0 auto">
+                        <img src="{$vo.avatar}" width="50px" height="50px" style="margin-left:50px"/>
+                    </div>
+                    <div style="margin:10px 50px"><button class="btn btn-primary" type="button" onclick="joinGroup({$vo.id})">加入</button></div>
+                </div>
+            </div>
+        </div>
+        {/foreach}
+        {/if}
+    </div>
+
+</div>
+<script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>
+<script src="/static/admin/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="/static/admin/js/plugins/layer/layer.min.js"></script>
+<script type="text/javascript">
+    //建立WebSocket通讯
+    var socket = new WebSocket('ws://127.0.0.1:7272');
+
+    $(document).ready(function(){
+       //搜索群组
+        $("#find").click(function(){
+            var search_txt = $("#search_txt").val();
+            if( '' == search_txt ){
+                layer.alert('群名称不能为空', {'icon':2});
+                return;
+            }
+            $.getJSON("{:url('findgroup/search')}", {'search_txt':search_txt}, function(res){
+                var _html = "";
+                $("#search_title").text('搜索结果：');
+                if( 1 == res.code ){
+                    $.each(res.data, function(k, v){
+                        _html += '<div class="col-sm-3"><div class="ibox float-e-margins"><div class="ibox-title">';
+                        _html += '<h5>' + v.groupname + '</h5></div><div class="ibox-content"><div style="margin: 0 auto">';
+                        _html += '<img src="' + v.avatar + '" width="50px" height="50px" style="margin-left:50px"/>';
+                        _html += '</div><div style="margin:10px 50px"><button class="btn btn-primary" type="button" onclick="joinGroup('+ v.id +')">加入</button></div>';
+                        _html += '</div></div></div>';
+                    });
+                    $("#search_data").html(_html);
+
+                }else{
+                    _html += '<div class="col-sm-12"><div class="ibox float-e-margins"><div class="ibox-content">';
+                    _html += '<div class="form-group"><div class="col-sm-10"><label style="color: red">' + res.msg + '</label>';
+                    _html += '</div></div></div></div></div>';
+
+                    $("#search_data").html(_html);
+                }
+            })
+        });
+
+        //创建群组
+        $("#addGroup").click(function(){
+            //iframe层
+            layer.open({
+                type: 2,
+                title: '创建群组',
+                shadeClose: true,
+                shade: false,
+                maxmin: false, //开启最大化最小化按钮
+                area: ['850px', '460px'],
+                content: "{:url('findgroup/addgroup')}"
+            });
+            
+            //close_layer();  //关闭当前的layer层
+        });
+        
+        //管理的群组
+        $("#myGroup").click(function(){
+        	window.location.href = "{:url('findgroup/myGroup')}";
+        })
+    });
+    //加入群组
+    function joinGroup(groupid){
+        $.getJSON("{:url('findgroup/joinGroup')}", {'gid' : groupid}, function(res){
+        	if( 1 == res.code ){
+
+                var join_data = res.data;
+                socket.send( join_data );  //发送socket
+
+        		layer.alert( res.msg, {'icon' : 1});
+        	}else{
+        		layer.alert( res.msg, {'icon' : 2} );
+        	}
+        })
+    }
+
+    function close_layer(){
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
+</script>
+</body>
+</html>

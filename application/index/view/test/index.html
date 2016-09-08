@@ -1,0 +1,39 @@
+<html>
+<head>
+    <meta content="text/html"; charset=utf8 />
+    <title>AjaxSubmit提交方法，实现图片上传功能</title>
+</head>
+<body>
+    <script src="/static/admin/js/jquery.min.js?v=2.1.4"></script>
+    <script src="/static/admin/js/jquery.form.js"></script>
+    <script type="text/javascript">
+        $(function (){
+            var options = {
+                target: '#showmsg',
+                beforeSubmit:showStart,
+                success:showSuccess
+                //dataType:  'html'
+            };
+            $('#form').submit(function(){
+                $(this).ajaxSubmit(options);
+                return false;
+            });
+        });
+        function showStart(){
+            //alert('开始提交');
+            return true;
+        }
+        function showSuccess(data){
+            //alert('<img src="'+data+'"/>');exit;
+            //$("#img").html('<img src="'+data+'"/>');
+        }
+    </script>
+    <form action="{:url('test/upload')}" method="post" id="form" enctype="multipart/form-data">
+        <div id="showmsg"></div>
+        <p id="img">text</p>
+        <input type="file" name="file" />
+        <input type="submit" value="提交"/>
+    </form>
+</body>
+
+</html>
