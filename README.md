@@ -20,6 +20,13 @@ back文件加下有数据库备份文件，请建立数据库，并导入。同�
 # 数据库在哪里？  
 back 文件夹下有一个 snake.sql 导入即可  
 
+# 如何运行  
+1、将代码下载到本地，并配置好虚拟域名，使 laychat 可以运行。（基于tp5框架，只要按照tp5框架的配置方式即可）  
+2、导入 back 文件夹下的 snake.sql 表，数据库名 为 sanke （你可以自己改的，但是别忘了代码中更改）  
+3、启动 getwayworker，本案例 基于的win平台的getwayworker，如果您想在linux下部署，请先阅读 getwayworker 文档有了基本的理解，然后下载 linux 版本的
+getwayworker，然后移植本程序的业务逻辑部分即可。如果您是win，请双加 /vendor/Workerman/start_for_win.bat,然后不要关闭窗口。此外，如果您更改了数据库连接，请更改 vendor/Workerman/Applications/Config/Db.php 的配置  
+4、访问聊天系统，进入前台，使用前台用户的 用户名，密码登录即可聊天。 请用两个浏览器打开，登录不同的账户互相聊天。 密码 默认为 admin
+
 # 了解效果
 http://www.thinkphp.cn/code/2289.html
 
