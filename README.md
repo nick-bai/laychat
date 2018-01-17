@@ -28,7 +28,9 @@ back 文件夹下有一个 snake.sql 导入即可
 3、启动 getwayworker，本案例 基于的win平台的gatewayworker，如果您想在linux下部署，请先阅读 gatewayworker 文档有了基本的理解，然后下载 linux 版本的
 gatewayworker，然后移植本程序的业务逻辑部分即可。如果您是win，请双击/vendor/Workerman/start_for_win.bat,然后不要关闭窗口。此外，如果您更改了数据库连接，请更改 vendor/Workerman/Applications/Config/Db.php 的配置   
   
-4、访问聊天系统，进入前台，使用前台用户的 用户名，密码登录即可聊天。 请用两个浏览器打开，登录不同的账户互相聊天。 密码 默认为 admin
+4、访问聊天系统，进入前台，使用前台用户的 用户名，密码登录即可聊天。 请用两个浏览器打开，登录不同的账户互相聊天。 密码 默认为 admin  
+
+5、在win下一定要记得双击 laychat/vendor/Workerman/start_for_win.bat 启动 workerman，不要关闭！！！
 
 # 了解效果
 http://www.thinkphp.cn/code/2289.html
