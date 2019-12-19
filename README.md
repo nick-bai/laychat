@@ -11,7 +11,7 @@ layIM+workerman+thinkphp5的webIM即时通讯系统 v2.0正式版
 7、实现了单聊聊天记录和群聊聊天记录的查看  
 
 # 注意事项:  
-back文件加下有数据库备份文件，请建立数据库，并导入。同时配置项目中的config文件中的datebase.php的数据库信息。  
+back文件夹下有数据库备份文件，请建立数据库，并导入。同时配置项目中的config文件中的datebase.php的数据库信息。  
 别忘了vendor/Workerman/Applications/Config/Db.php，workerman的数据库同步跟上。
 
 # 关于LayIM
