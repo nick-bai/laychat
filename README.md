@@ -1,3 +1,7 @@
+# 最新免费可商用CMS系统
+基于 thinkphp6 + vue 的多站点多语言，SEO友好的开源CMS系统，可免费商用。
+https://gitee.com/digital-flag/huo-cms
+
 # laychat
 layIM+workerman+thinkphp5的webIM即时通讯系统 v2.0正式版  
 
